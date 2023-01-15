@@ -8,6 +8,10 @@ init();
 
 listRef.addEventListener('click', onButtonClick);
 
+listRef.addEventListener('click', onParagrafClick);
+
+
+
 function onSubmit(evt) {
   evt.preventDefault();
   console.dir(evt.target.elements.message.value);
@@ -24,7 +28,7 @@ function onSubmit(evt) {
   addMarkup(markup);
 }
 function objFabric(value) {
-  return { value, cheked: false, id: Date.now() };
+  return { value, checked: false, id: Date.now() };
 }
 // console.log(arrayCheck());
 submitL.addEventListener('submit', onSubmit);
@@ -61,8 +65,9 @@ function onButtonClick(evt) {
     return;
   }
 
-  const item = evt.target.closest('.item');
-  const id = item.dataset.id;
+  // const item = evt.target.closest('.item');
+
+  const {id, item} = returnID(evt);
   console.log(id);
 
   const data = arrayCheck();
@@ -71,4 +76,28 @@ function onButtonClick(evt) {
   console.log(filteredArr);
   addDataToStorage(filteredArr);
   item.remove();
+}
+
+function returnID(evt){
+  const item = evt.target.closest('.item');
+  return {id: item.dataset.id, item };
+
+}
+
+function onParagrafClick(evt){
+  if (evt.target.nodeName !== 'P') {
+    return;
+  }
+  
+  const {id, item} = returnID(evt);
+  const data = arrayCheck();
+  for (const obj of data) {
+    if(obj.id.toString() === id.toString()){
+      obj.checked = !obj.checked
+    }
+  }
+  addDataToStorage(data);
+console.log(data);
+item.classList.toggle('checked')
+
 }
